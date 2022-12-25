@@ -1,4 +1,4 @@
-package com.dhx.gulimall.gulimallware;
+package com.dhx.gulimall.ware;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
