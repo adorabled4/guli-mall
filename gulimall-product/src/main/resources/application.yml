@@ -6,7 +6,7 @@ spring:
     url: jdbc:mysql://192.168.159.131:3306/gulimall_pms
   cloud:
     nacos:
-      discovery:
+      discovery: ## 注册中心地址
         server-addr: 192.168.166.1:8848
   application:
     name: gulimall-product
@@ -15,6 +15,17 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto # 设置id自增
-
+      logic-delete-value: 1 # 1为已经删除
+      logic-not-delete-value: 0
 server:
   port: 10000
+logging:
+  level: # 设置日志打印级别
+    com.dhx.gulimall: debug
+
+alibaba:
+  cloud:
+    access-key: LTAI5tSWB1RrfpVPBo68ayqw
+    secret-key: CeEgJtVgiYEBu7dXb23DWbTmnvBB7K
+    oss:
+      endpoint: oss-cn-shanghai.aliyuncs.com

@@ -10,7 +10,6 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
-.mvn/wrapper/maven-wrapper.jar
 
 **/mvnw
 **/mvnw.cmd
@@ -19,3 +18,7 @@ buildNumber.properties
 **/target/
 .idea
 **/.gitignore
+
+**/application.yml
+**/application.properties
+**/bootstrap.properties

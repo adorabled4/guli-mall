@@ -8,6 +8,7 @@
 
 package com.dhx.gulimall.common.utils;
 
+import com.dhx.gulimall.common.exception.BizCode;
 import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
@@ -55,6 +56,13 @@ public class R extends HashMap<String, Object> {
 	
 	public static R ok() {
 		return new R();
+	}
+
+	public static R error(BizCode unknowException) {
+		R r = new R();
+		r.put("code", unknowException.getCode());
+		r.put("msg", unknowException.getMessage());
+		return r;
 	}
 
 	public R put(String key, Object value) {
