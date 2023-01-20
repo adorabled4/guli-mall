@@ -1,7 +1,11 @@
 package com.dhx.gulimall.product.service.impl;
 
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -11,6 +15,7 @@ import com.dhx.gulimall.common.utils.Query;
 import com.dhx.gulimall.product.dao.ProductAttrValueDao;
 import com.dhx.gulimall.product.entity.ProductAttrValueEntity;
 import com.dhx.gulimall.product.service.ProductAttrValueService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("productAttrValueService")
@@ -26,4 +31,34 @@ public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueDao
         return new PageUtils(page);
     }
 
+
+    @Override
+    public void saveProductAttr(List<ProductAttrValueEntity> collect) {
+        this.saveBatch(collect);
+    }
+
+    @Override
+    public List<ProductAttrValueEntity> baseAttrListForSpu(Long spuId) {
+        List<ProductAttrValueEntity> entities = list(new QueryWrapper<ProductAttrValueEntity>().eq("spu_id", spuId));
+
+        return entities;
+    }
+
+    /**
+     * spu 规格维护
+     * @param spuId
+     * @param entities
+     */
+    @Transactional
+    @Override
+    public void updateSpuAttr(Long spuId, List<ProductAttrValueEntity> entities) {
+        //1.删除spu_id之前对应的所有属性
+        boolean result = remove(new QueryWrapper<ProductAttrValueEntity>().eq("spu_id", spuId));
+        List<ProductAttrValueEntity> attrs = entities.stream().map(attr -> {
+            attr.setSpuId(spuId);
+            return attr;
+        }).collect(Collectors.toList());
+        saveBatch(attrs);
+
+    }
 }

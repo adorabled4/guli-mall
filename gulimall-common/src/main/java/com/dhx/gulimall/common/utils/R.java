@@ -9,6 +9,7 @@
 package com.dhx.gulimall.common.utils;
 
 import com.dhx.gulimall.common.exception.BizCode;
+import lombok.Data;
 import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import java.util.Map;
  *
  * @author Mark sunlightcs@gmail.com
  */
+@Data
 public class R extends HashMap<String, Object> {
 	private static final long serialVersionUID = 1L;
 	
@@ -68,5 +70,9 @@ public class R extends HashMap<String, Object> {
 	public R put(String key, Object value) {
 		super.put(key, value);
 		return this;
+	}
+
+	public Integer getCode(){
+		return Integer.parseInt((String) this.get("code"));
 	}
 }

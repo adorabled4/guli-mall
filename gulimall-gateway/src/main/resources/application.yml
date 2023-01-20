@@ -20,6 +20,18 @@ spring:
           filters:
             - RewritePath=/api/thirdparty/(?<segment>/?.*), /$\{segment}
 
+        - id: member_route
+          uri: lb://gulimall-member
+          predicates: # 断言
+            - Path=/api/member/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*), /$\{segment}
+        - id: ware_route
+          uri: lb://gulimall-ware
+          predicates: # 断言
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*), /$\{segment}
         # 要把renren-fast的路由放在下面,把准确的路由放在上面
         - id: admin_route
           uri: lb://renren-fast # 将请求地址负载均衡(lb)给 renren-fast服务
@@ -35,4 +47,5 @@ spring:
     web-application-type: reactive # springmvc 与 gateway不兼容
 server:
   port: 88
+
 

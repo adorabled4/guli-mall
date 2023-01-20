@@ -28,15 +28,18 @@ import java.util.Map;
 @RestController
 public class OssController {
 
+
     @Resource
     OSSClient ossClient;    // 这里注意看 OssAutoContext 中里面的Bean的配置, 实现的是Oss的接口类型, 因此不能用OssClient
 
-    @Value("${alibaba.cloud.access-key}")
+    @Value("${spring.cloud.alicloud.access-key}")
     private String accessId;
 
-    @Value("${alibaba.cloud.oss.endpoint}")
+    @Value("${spring.cloud.alicloud.oss.endpoint}")
     private String endpoint;
-    @Value("${alibaba.cloud.oss.bucket}")
+
+
+    @Value("${spring.cloud.alicloud.oss.bucket}")
     private String bucket;
 
     @GetMapping("/oss/policy")
@@ -62,7 +65,6 @@ public class OssController {
             byte[] binaryData = postPolicy.getBytes("utf-8");
             String encodedPolicy = BinaryUtil.toBase64String(binaryData);
             String postSignature = ossClient.calculatePostSignature(postPolicy);
-
             respMap = new LinkedHashMap<String, String>();
             respMap.put("ossaccessKeyId", accessId);
             respMap.put("policy", encodedPolicy);

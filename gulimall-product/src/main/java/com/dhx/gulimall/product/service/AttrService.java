@@ -3,7 +3,11 @@ package com.dhx.gulimall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dhx.gulimall.common.utils.PageUtils;
 import com.dhx.gulimall.product.entity.AttrEntity;
+import com.dhx.gulimall.product.vo.AttrGroupRelationVo;
+import com.dhx.gulimall.product.vo.AttrRespVo;
+import com.dhx.gulimall.product.vo.AttrVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +20,19 @@ import java.util.Map;
 public interface AttrService extends IService<AttrEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void saveAttr(AttrVo attr);
+
+    PageUtils queryBaseAttrPage(Map<String, Object> params, Long catelogId,String type);
+
+    AttrRespVo getAttrInfo(Long attrId);
+
+    void updateAttr(AttrVo attr);
+
+    List<AttrEntity> getRelationAttr(Long attrgroupId);
+
+    void deleteRelation(AttrGroupRelationVo[] vos);
+
+    PageUtils getNoRelationAttr(Long attrgroupId, Map<String, Object> params);
 }
 

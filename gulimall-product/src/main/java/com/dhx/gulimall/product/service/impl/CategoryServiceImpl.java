@@ -1,7 +1,11 @@
 package com.dhx.gulimall.product.service.impl;
 
+import com.dhx.gulimall.product.service.CategoryBrandRelationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,12 +19,17 @@ import com.dhx.gulimall.common.utils.Query;
 import com.dhx.gulimall.product.dao.CategoryDao;
 import com.dhx.gulimall.product.entity.CategoryEntity;
 import com.dhx.gulimall.product.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 
 
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
 
 
+    @Resource
+    CategoryBrandRelationService categoryBrandRelationService;
     @Override
     public void removeMenuByIds(List<Long> asList) {
         //todo 检查当前需要删除的菜单是否被别的地方引用
@@ -78,5 +87,42 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
             return (menu1.getSort()==null?0:menu1.getSort()) - (menu2.getSort()==null?0:menu2.getSort());
         }).collect(Collectors.toList());
         return children;
+    }
+
+    @Override
+    public Long[] findCatelogPath(Long catelogId) {
+        CategoryEntity byId = this.getById(catelogId);
+        List<Long> paths = findParentPath(catelogId,new ArrayList<>());
+        // 注意我们这个递归的查找是自底向上 , 但是前端显示需要 按照由父到子节点的顺序 ,因此这里需要reverse
+        Collections.reverse(paths);
+        return paths.toArray(new Long[paths.size()]);
+    }
+
+    /**
+     * 递归查找 id  路径 => 关键点在于查找父ID
+     * @param catelogId
+     * @param paths
+     * @return
+     */
+    private List<Long> findParentPath(Long catelogId,List<Long> paths){
+        //1. 手机当前节点的id
+        paths.add(catelogId);
+        CategoryEntity category = this.getById(catelogId);
+        if(category.getParentCid()!=0){
+            findParentPath(category.getParentCid(),paths);
+        }
+        return paths;
+    }
+
+    /**
+     * 级联更新关联的所有数据
+     * @param category
+     */
+    @Transactional
+    @Override
+    public void updateCascade(CategoryEntity category) {
+        this.updateById(category);
+        categoryBrandRelationService.updateCategory(category.getCatId(),category.getName());
+
     }
 }
