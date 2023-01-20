@@ -8,12 +8,6 @@ spring:
     nacos:
       discovery: ## 注册中心地址
         server-addr: 192.168.166.1:8848
-#      alicloud:
-#        oss:
-#          endpoint: oss-cn-shanghai.aliyuncs.com
-#          bucket: 20230112-gulimall
-#        access-key: LTAI5tSWB1RrfpVPBo68ayqw
-#        secret-key: CeEgJtVgiYEBu7dXb23DWbTmnvBB7K
   application:
     name: gulimall-product
   jackson: #日期格式化
@@ -31,10 +25,3 @@ server:
 logging:
   level: # 设置日志打印级别
     com.dhx.gulimall: debug
-#
-#alibaba:
-#  cloud:
-#    access-key: LTAI5tSWB1RrfpVPBo68ayqw
-#    secret-key: CeEgJtVgiYEBu7dXb23DWbTmnvBB7K
-#    oss:
-#      endpoint: oss-cn-shanghai.aliyuncs.com
